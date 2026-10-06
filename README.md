@@ -1,107 +1,45 @@
-# Nocturne — Estate & Cellars
+# Lace Your Own Way
 
-A single-product wine site: oxblood frame, parchment panel, enormous Didone display type,
-and one real 3D bottle that stays pinned dead centre while the whole page moves past it.
+A student marketing campaign for Google Checkered Shoelaces White. Built with
+React 19, TypeScript, Vite, Tailwind CSS, GSAP/ScrollTrigger, and Lenis.
 
-```bash
-npm install
-npm run dev      # http://localhost:3003
+## Run
+
+```sh
+npm ci
+npm run dev
+npm run lint
 npm run build
-npm run lint     # tsc --noEmit
-npm run model    # re-derive public/model/wine.glb from model-src/
+npm run preview
 ```
 
-## How the motion works
+## Design and motion
 
-The reference this was built from pins its product in the middle of the viewport for the
-entire scroll, runs giant type behind it at a faster rate, and finally lets the product
-shrink into a row of pack formats. Three ideas carry all of that:
+A generated transparent sneaker cutout follows the page between four measured
+DOM slots. `src/components/ShoeStage.tsx` interpolates position, scale, and angle
+on desktop; on narrow screens it docks to in-flow slots so it stays clear of copy.
+Reduced-motion preferences disable smooth scrolling, ticker movement, and rotation.
+The static content, native navigation, and FAQs remain accessible without animation.
 
-**The canvas never scrolls.** `Stage` is `position: fixed`, full-bleed, `pointer-events:
-none`. Nothing is pinned, unpinned or re-laid-out, so there is nothing to jump or fight
-with the smooth scroller. "Where the bottle is" is purely a pose computed per frame.
+The copy targets students and sneaker fans, focusing on personal expression and a
+small, affordable style change. Shopping links go to the actual Google Merch Shop;
+this site does not take payments or pretend to be the official store.
 
-**`lib/choreography.ts` is the single source of that pose.** It has three regimes:
+## Product facts and images
 
-| Regime | When | How the pose is decided |
-| --- | --- | --- |
-| Keyframed | hero → tasting notes | a hand-authored track, interpolated against scroll position |
-| Docked | the allocation lineup | read straight off the DOM slot's `getBoundingClientRect()` |
-| Narrow | below `lg` | the nearest in-flow slot, so the bottle never covers stacked copy |
+Official product listing, verified October 6, 2026:
+https://shop.merch.google/product/google-checkered-shoelaces-white-ggoegcba186299
 
-The docked regime is the important one: the lineup slot is an *empty div* in the row, and
-the model is flown into whatever rectangle that div happens to occupy. The landing is
-correct at every viewport width with no tuned numbers, and it keeps tracking the row as it
-scrolls away. `Pose.key` names the regime — when it changes, `Product` snaps instead of
-easing, because the two places can be viewports apart.
+Listed price: $5 USD. Dimensions: 0.5 inches wide by 45 inches long. Made in USA.
+Price, inventory, and shipping are confirmed by the official store at purchase time.
+See ASSETS.md for image provenance and the exact generation prompt.
 
-**Nothing in the 3D path touches React.** `samplePose()` returns a single mutable object,
-and `Product`'s `useFrame` damps toward it. Scroll never triggers a render.
+## Deployment
 
-DOM motion is GSAP ScrollTrigger over Lenis: scrubbed parallax (`useParallax`), batched
-fade-ups and masked line reveals (`useRevealSystem`). Lenis' expo-out curve is most of why
-the page feels heavy rather than floaty.
+Repository: https://github.com/owensullivan2806/MKTG-project-2
+Website: https://owensullivan2806.github.io/MKTG-project-2/
 
-## The model
-
-The supplied `wine_bottle_and_glass.glb` needed two passes before it was usable:
-
-1. **Spec-gloss → metal-rough.** It shipped with `KHR_materials_pbrSpecularGlossiness`,
-   which three.js dropped in r160. Loaded as-is it renders untextured white.
-2. **`npm run model`** removes the tumbler and its wine, and removes the stock
-   "Red wine 2003" label bitmap — 1.5 MB of an image that is never shown. 2.41 MB → 193 KB.
-
-The label is painted onto a canvas at runtime instead (`lib/label.ts`), so the bottle
-carries real branding. Two conventions that are easy to get backwards and are verified
-against the mesh's own UVs: the art is **mirrored** (local +X maps to increasing `u`, and
-the group is turned to face camera, so `u` runs right-to-left on screen), and
-`flipY = false` per glTF.
-
-Materials are art-directed rather than inherited. The body is **opaque** dark-green glass
-with a clearcoat: a wine bottle is not see-through, and transmission over a transparent
-canvas has nothing behind it to refract, so it comes out muddy. The label gets a
-`polygonOffset` because it sits only 0.015 units proud of a 2.3-unit radius.
-
-Lighting is a local `<Environment>` built from `<Lightformer>` cards — no HDRI fetch, and
-every highlight on the bottle is placed by hand.
-
-## Assets
-
-Every photograph is optional. `lib/assets.ts` probes each file; until it exists the layout
-holds its exact space with a drawn placeholder, and crossfades to the real image the
-moment one appears in `public/img/`. The wine stains, the estate seal, the letterpress
-grit and the paper grain all have generated fallbacks, so the site is complete with zero
-photography. **[ASSETS.md](ASSETS.md) has a ready-to-use generation prompt for each file.**
-
-CSS is the one place that cannot fall back on its own — a missing mask image would paint a
-solid block over the display type — so the two textures are probed in JS and the
-stylesheet only reaches for them once `has-grit` / `has-paper` is set on `<html>`.
-
-## Things worth knowing before editing
-
-- **Custom classes live in `@layer components`.** Unlayered rules beat every layered one
-  regardless of specificity, so `.t-body { color }` outside a layer would silently win over
-  `text-parchment/75` and leave all the reversed copy dark on dark.
-- **`GiantType` measures and fits each line to the container width.** A `vw` clamp cannot
-  do this, because the right size depends on the word. The measuring span must be
-  `inline-block`: a block-level span reports the *container's* width and the fit no-ops.
-- **All copy is in `lib/content.ts`.** Sections read from it; rewriting the wine does not
-  touch a layout or motion decision.
-- **Reveal start-states are gated behind `[data-motion='on']`**, which the motion system
-  sets only once it is actually driving. If the JS fails the page renders complete rather
-  than blank.
-- `prefers-reduced-motion` drops Lenis, the parallax and the reveals; the bottle keeps its
-  pose but loses the smoothing.
-
-## GitHub Pages deployment
-
-This project publishes from `main` to
-https://owensullivan2806.github.io/MKTG-project-2/ using `.github/workflows/deploy.yml`.
-The Vite base is `/MKTG-project-2/`; runtime image and model URLs use that base.
-In the repository's Settings → Pages, select **GitHub Actions** as the source.
-Push to `main` or run **Deploy to GitHub Pages** manually from the Actions tab.
-The workflow runs `npm ci`, TypeScript validation, and the production build before deployment.
-
-The supplied model builder now preserves vertex attributes when pruning unused
-materials, retaining the UV coordinates needed by the runtime Nocturne label.
-The template's newsletter and commerce controls remain demo interactions as supplied.
+Vite uses `/MKTG-project-2/` as the base path. `.github/workflows/deploy.yml` runs
+npm ci, TypeScript validation, and the production build before deploying to Pages.
+A push to main triggers deployment; the workflow can also be run manually.
+The original wine template is preserved in commit 5b674107ceed189c0e5aaf73dc0d0a528730981b.
