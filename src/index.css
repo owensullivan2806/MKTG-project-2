@@ -2,12 +2,14 @@
 :root {
   font-family: "Inter", sans-serif;
   color: #202124;
-  background: #faf9f6;
+  background: #ffffff;
   font-synthesis: none;
   font-weight: 400;
-  --blue: #2457e8;
+  --blue: #1a73e8;
+  --red: #ea4335;
+  --yellow: #fbbc05;
+  --green: #188038;
   --ink: #202124;
-  --lime: #edff72;
 }
 * {
   box-sizing: border-box;
@@ -42,7 +44,7 @@ summary:focus-visible {
   outline-offset: 6px;
 }
 ::selection {
-  background: var(--lime);
+  background: var(--yellow);
   color: var(--ink);
 }
 h1,
@@ -141,7 +143,7 @@ img {
     transform 0.2s;
 }
 .button:hover {
-  background: #183ca9;
+  background: #185abc;
   transform: translateY(-2px);
 }
 .button > span {
@@ -273,7 +275,7 @@ h1 .blue {
   aspect-ratio: 1;
   border: 1px solid #20212416;
   border-radius: 50%;
-  background: radial-gradient(circle, #e6eafb80 0%, #e6eafb00 70%);
+  background: radial-gradient(circle, #e8f0fe 0%, #e8f0fe00 70%);
 }
 .orbit:after {
   content: "";
@@ -290,7 +292,7 @@ h1 .blue {
   width: 114px;
   height: 114px;
   border-radius: 50%;
-  background: var(--lime);
+  background: var(--yellow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -340,7 +342,7 @@ h1 .blue {
   position: relative;
   z-index: 25;
   overflow: hidden;
-  background: var(--lime);
+  background: var(--yellow);
   padding: 18px 0;
   border-top: 1px solid #202124;
   border-bottom: 1px solid #202124;
@@ -372,7 +374,7 @@ h1 .blue {
   }
 }
 .look {
-  background: var(--blue);
+  background: #1967d2;
   color: white;
   margin-top: -12px;
   padding-top: 64px;
@@ -409,7 +411,7 @@ h2 {
   letter-spacing: -0.055em;
 }
 .look h2 span {
-  color: var(--lime);
+  color: var(--yellow);
 }
 .look-copy > p,
 .details-copy > p,
@@ -420,7 +422,7 @@ h2 {
   margin-top: 26px;
 }
 .look-copy > p {
-  color: #ffffffd6;
+  color: #ffffff;
 }
 .look-visual {
   position: relative;
@@ -450,7 +452,7 @@ h2 {
   font-size: 34px;
   line-height: 0.9;
   transform: rotate(-8deg);
-  color: var(--lime);
+  color: var(--yellow);
 }
 .benefit {
   display: flex;
@@ -461,7 +463,7 @@ h2 {
 }
 .benefit > span {
   font-size: 10px;
-  color: var(--lime);
+  color: #ffffff;
   padding-top: 3px;
 }
 .benefit h3 {
@@ -471,7 +473,7 @@ h2 {
 .benefit p {
   font-size: 12px;
   line-height: 1.8;
-  color: #ffffffc9;
+  color: #ffffff;
   margin-top: 9px;
 }
 .text-link {
@@ -534,9 +536,9 @@ h2 {
   position: absolute;
   inset: -60px 0 -40px;
   background: conic-gradient(
-    #e6eaf2 25%,
+    #fce8e6 25%,
     transparent 0 50%,
-    #e6eaf2 0 75%,
+    #fce8e6 0 75%,
     transparent 0
   );
   background-size: 110px 110px;
@@ -562,7 +564,7 @@ h2 {
   letter-spacing: 0.05em;
 }
 .purchase {
-  background: #edff72;
+  background: var(--yellow);
   min-height: 840px;
   padding-top: 40px;
 }
@@ -586,7 +588,7 @@ h2 {
   top: -150px;
   font-size: 560px;
   line-height: 1;
-  color: #d0e44a;
+  color: #efab00;
 }
 .purchase-copy {
   position: relative;
@@ -638,12 +640,12 @@ h2 {
   font-size: 9px;
   line-height: 1.7;
   margin-top: 15px;
-  color: #4a501d;
+  color: #53420c;
 }
 .closer {
   position: relative;
   z-index: 30;
-  background: #faf9f6;
+  background: #ffffff;
   display: grid;
   grid-template-columns: 43% 47%;
   gap: 10%;
@@ -710,7 +712,7 @@ h2 {
 footer {
   position: relative;
   z-index: 30;
-  background: #202124;
+  background: #137333;
   color: white;
   padding: 45px 4.4% 25px;
 }
@@ -741,7 +743,7 @@ footer {
   padding-top: 23px;
   font-size: 9px;
   line-height: 1.8;
-  color: #ffffff80;
+  color: #ffffffd9;
 }
 .footer-bottom > a {
   white-space: nowrap;
@@ -813,7 +815,7 @@ footer {
     left: -7%;
     right: -7%;
     padding: 28px;
-    background: #faf9f6;
+    background: #ffffff;
     border-bottom: 1px solid #20212420;
     box-shadow: 0 15px 30px #20212410;
   }
@@ -1121,4 +1123,27 @@ footer {
   .image-caption {
     bottom: 4%;
   }
+}
+
+/* The four check colors repeat through the campaign. */
+.hero-way {
+  color: var(--green);
+}
+.hero-period {
+  color: var(--red);
+}
+.sticker svg {
+  stroke: var(--red);
+}
+.ticker b:nth-of-type(3n + 1) {
+  color: #185abc;
+}
+.ticker b:nth-of-type(3n + 2) {
+  color: #b3261e;
+}
+.ticker b:nth-of-type(3n) {
+  color: #137333;
+}
+.detail-tag {
+  border-bottom: 4px solid var(--red);
 }

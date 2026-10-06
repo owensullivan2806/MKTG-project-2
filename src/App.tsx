@@ -114,7 +114,10 @@ export default function App() {
                   <br />
                   YOUR
                   <br />
-                  <span className="blue">OWN WAY.</span>
+                  <span className="blue">
+                    OWN <span className="hero-way">WAY</span>
+                    <span className="hero-period">.</span>
+                  </span>
                 </h1>
                 <p className="hero-intro">
                   Your favorite kicks.

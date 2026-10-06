@@ -15,6 +15,9 @@ npm run preview
 
 ## Design and motion
 
+The palette repeats the laces’ blue, red, yellow, and green on white. Darker blue
+and green variants maintain readable text and button contrast.
+
 A generated transparent sneaker cutout follows the page between four measured
 DOM slots. `src/components/ShoeStage.tsx` interpolates position, scale, and angle
 on desktop; on narrow screens it docks to in-flow slots so it stays clear of copy.
